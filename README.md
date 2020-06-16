@@ -1,11 +1,16 @@
-How to use NATPTransport
+NATPTransport
 -------------
+#### About
+ NATPTransport is a transport for [Unity Mirror](https://github.com/vis2k/Mirror "Unity Mirror").
+ NATPTransport  using relay server to punch through NAT. 
 #### Support protocols
 - TCP
 - UDP (Coming soon)
 - SSL (Coming soon)
 - WebSocket (Coming soon)
 
+How to use NATPTransport
+-------------
 ## Server
 #### Step1 Setup
 ##### Install .NET Core
@@ -39,3 +44,9 @@ How to use NATPTransport
 [![example](https://github.com/cxz456999/NATPTransport/blob/master/Images/Example.JPG "example")](https://github.com/cxz456999/NATPTransport/blob/master/Images/Example.JPG "example")
 5. Input room tag
 6. enjoyed
+
+Referrence
+-------------
+[NetCoreServer](https://github.com/chronoxor/NetCoreServer)
+
+[Mirror](https://github.com/vis2k/Mirror)
