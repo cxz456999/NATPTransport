@@ -23,6 +23,7 @@ How to use NATPTransport
 - External_IP_Address:  Server external IP address
 - Port: Server listening on
 - Users:  List of users have authority to create room on server
+
 [![Appconfig](https://github.com/cxz456999/NATPTransport/blob/master/Images/Appconfig.JPG "Appconfig")](https://github.com/cxz456999/NATPTransport/blob/master/Images/Appconfig.JPG "App.config")
 
 #### Step3 Run
