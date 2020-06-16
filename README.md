@@ -33,7 +33,7 @@ How to use NATPTransport
 
 ## Client
 1. Import [Mirror](https://github.com/vis2k/Mirror "Mirror")
-2. Import [NATPTransport.unitypackage](https://github.com/cxz456999/NATP/tree/master/Release/Unity_Mirror_Transport "NATPTransport.unitypackage")
+2. Import NATPTransport.unitypackage
 3. Use NATPTransport as transport
 4. Input the public IP address (server external-ip), User/Password (added in App.config)
 [![example](https://github.com/cxz456999/NATPTransport/blob/master/Images/Example.JPG "example")](https://github.com/cxz456999/NATPTransport/blob/master/Images/Example.JPG "example")
