@@ -12,13 +12,13 @@ namespace NATP.Server
     {
         private int connectionID;
         INATP_SignalingServerSender clientToHost;
-        public NATP_TCP_RelayServerSession(TcpServer server, int connectionID, INATP_SignalingServerSender Sender) : base(server) 
+        public NATP_TCP_RelayServerSession(TcpServer server, int connectionID, INATP_SignalingServerSender Sender) : base(server)
         {
             this.clientToHost = Sender;
             this.connectionID = connectionID;  //relayCore = new NATP_RelayServerCore(this); 
         }
         #region Encrypt/Decrpty
-        NetworkSerializer serializer = new NetworkSerializer(8192);
+
         public bool EncryptSend(byte[] data)
         {
             return Send(EncryptPackage(data)) > 0;
@@ -29,6 +29,7 @@ namespace NATP.Server
         }
         private byte[] EncryptPackage(byte[] data)
         {
+            NetworkSerializer serializer = new NetworkSerializer(8192);
             int pkgLength = data.Length;
             serializer.Clear();
             serializer.Write(pkgLength);
@@ -43,6 +44,7 @@ namespace NATP.Server
         }
         private List<byte[]> DecryptPackage(byte[] data)
         {
+            NetworkSerializer serializer = new NetworkSerializer(8192);
             serializer.SetBuffer(data, 0, data.Length);
             List<byte[]> packages = new List<byte[]>();
             while (!serializer.IsEnd())
@@ -70,7 +72,7 @@ namespace NATP.Server
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            
+
             var packages = DecryptPackage(buffer, (int)offset, (int)size);
             for (int i = 0; i < packages.Count; i++)
             {
@@ -85,7 +87,7 @@ namespace NATP.Server
                 System.Buffer.BlockCopy(packages[i], 0, pure, 4, pkgSize);
                 clientToHost.EncryptSend(pure);
             }
-            
+
             //ReceiveAsync();
         }
 
@@ -99,7 +101,7 @@ namespace NATP.Server
             ServerMessage ssm = new ServerMessage(NATPMethod.ConnectionAttemptResponse);
             ssm.WriteUInt(NATPAttribute.ConnectionID, (uint)connectionID);
             var buffer = ssm.WriteRequest();
-            
+
             if (!clientToHost.EncryptSendAsync(buffer)) Console.WriteLine("ConnectionAttemptResponse: Error");
             //else Console.WriteLine("ConnectionAttemptResponse: Success");
         }
@@ -114,13 +116,13 @@ namespace NATP.Server
         public NATP_TCP_RelayServerSession FindSession(int connectionID)
         {
             //Console.WriteLine("FindSession: " + connectionID);
-            lock(_lock)
+            lock (_lock)
             {
                 if (connectionID2SessionID.ContainsKey(connectionID))
                     return (NATP_TCP_RelayServerSession)FindSession(connectionID2SessionID[connectionID]);
                 return null;
             }
-            
+
         }
         public void SendDisconnectEventToAllClients()
         {
@@ -143,12 +145,12 @@ namespace NATP.Server
         }
         public NATP_TCP_RelayServer(IPAddress address, int port, INATP_SignalingServerSender sender) : base(address, port) { this.Sender = sender; Port = port; }
 
-        protected override TcpSession CreateSession() 
+        protected override TcpSession CreateSession()
         {
             if (connectionID >= 10000000) connectionID = 0;
-            var sess =  new NATP_TCP_RelayServerSession(this, connectionID, Sender); 
-            connectionID2SessionID[connectionID++] = sess.Id; 
-            return sess; 
+            var sess = new NATP_TCP_RelayServerSession(this, connectionID, Sender);
+            connectionID2SessionID[connectionID++] = sess.Id;
+            return sess;
         }
 
         protected override void OnError(SocketError error)
